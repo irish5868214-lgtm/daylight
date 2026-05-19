@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Birthday Surprise 💖</title>
+    <style>
+        :root {
+            --primary-pink: #ff85a1;
+            --soft-pink: #fbb1bd;
+            --bg-color: #E0FFFF;
+            --text-color: #5d5d5d;
+            --accent-gold: #d4af37;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Floating Hearts Background */
+        .heart {
+            position: absolute;
+            color: var(--primary-pink);
+            font-size: 20px;
+            animation: float 4s linear infinite;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .hidden { display: none !important; }
+
+        /* First Page: 3 Gift Boxes */
+        .gift-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .gift-wrapper {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gift-wrapper:hover { transform: scale(1.1); }
+
+        .gift-icon {
+            font-size: 80px;
+            display: block;
+        }
+
+        .gift-label {
+            display: block;
+            margin-top: 10px;
+            color: var(--primary-pink);
+            font-weight: bold;
+            font-size: 14px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        /* Second Page: Card Frame */
+        .card-frame {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 133, 161, 0.2);
+            border: 6px double var(--soft-pink);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            gap: 25px;
+            text-align: left;
+        }
+
+        .card-img-frame {
+            position: relative;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+        }
+
+        .card-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-text {
+            flex: 1;
+            color: var(--text-color);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            margin-top: 25px;
+            padding: 10px 25px;
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover { background-color: #ff5e84; }
+        /* Responsive Mobile */
+        @media (max-width: 600px) {
+            .card-content { flex-direction: column; text-align: center; }
+            .card-img { width: 200px; height: 200px; }
+            .gift-icon { font-size: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgm" loop>
+  <source src="daylight.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+window.addEventListener("click", () => {
+  const music = document.getElementById("bgm");
+  music.play();
+}, { once: true });
+</script>
+    <div id="page1" class="container">
+        <h1 style="color: var(--primary-pink); text-shadow: 1px 1px white;">Click Your Gift</h1>
+         
+        
+    
+        
+        <div class="gift-container">
+            <div class="gift-wrapper" onclick="openGift(0)">
+                <span class="gift-icon">🎁</span>
+                <span class="gift-label">Box 1</span>
+            </div>
+           
+          
+        </div>
+    </div>
+
+    <div id="page2" class="container hidden">
+        <div class="card-frame">
+            <div class="card-content">
+                <div class="card-img-frame">
+                    <img id="display-img" src="" alt="photo" class="card-img">
+                </div>
+                <div class="card-text">
+                    <p id="display-wish"></p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // လက်ဆောင်ပုံး တစ်ခုချင်းစီအတွက် data
+        const giftData = [
+            
+            {
+                img: "p1.jpg", 
+                wish: "<b> For You</b><br> ကျနော့်အမကိုစတွေ့ကတည်းကသဘောကျခဲ့တာ အမ ကျနော့်တို့အခန်းထဲက ဝင်လာတုန်းကပေါ့( အဲ့တုန်းကအကြည့်တောင်မလွှဲနိုင်ခဲ့ဘူ: အမဆီကနေ) ဒီကြားထဲ outpass တွေဘာတွေရရင် အမacc ရှာပေမဲ့လည်း မတွေ့ဘူးရယ် အဲ့တုန်းက outpass ပြည့်လို့ အဆောင်သာပြန်ဝင်ရတယ် စိတ်ကမပြတ်ဘူး တော်ပါသေးရဲ့ သကြင်္န်မှာတွေ့ပီးကျနော့်ကိုသတိထားမိလို့ အဲ့တုန်းကတော်တော်ပျော်တာ အမနဲ့တွေ့ရလို့ ရေဘူးလေးတစ်ဘူးကိုင်ပီးစောင့်နေခဲ့တာအဲ့တုန်းက တွေ့များတွေ့မလားလို့                    စကားတွေအများကြီးပြောနေတာလိုရင်းမရောက်တော့ဘူး။            (ကျနော်အမကိုသဘောကျတယ် အများကြီးသဘောကျတယ် ကျနော့်ကိုပြန်ရွေးချယ်မယ်လို့တော့မမျှော့်လင့်ပါဘူးအမရယ် ဒီတိုင်း chance လေးပဲလိုချင်တာပါ ဘယ်လောက်စောင့်ရစောင့်ရ အမငြင်းရင်လည်းခံရမှာပေါ့ အမရွေးချယ်မှုနဲ့အမ ကျနော်ကလေးစားပီးသား အမဆုံးဖြတ်ချက်ကို)I mean we can’t force people to choose us right 🫡🫡🫡) စကားတွေအများကြီးပြောမိသွားပီ အမ ပီးတော့အမကဆရာဝန်ကောင်းတစ်ယောက်ဖြစ်လာမှာပါ ကျနော့် အမြဲပြောနေကြသလိုပဲ အမကဉာဏ်ကောင်းပီးသား exam တွေကိုအေးဆေးကျော်နိုင်မှာ fighting အမ💗"
+            },
+           
+        ];
+
+        function openGift(index) {
+            const data = giftData[index];
+            document.getElementById('display-img').src = data.img;
+            document.getElementById('display-wish').innerHTML = data.wish;
+            
+            document.getElementById('page1').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+        }
+
+        function goBack() {
+            document.getElementById('page2').classList.add('hidden');
+            document.getElementById('page1').classList.remove('hidden');
+        }
+
+        // Floating Hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
